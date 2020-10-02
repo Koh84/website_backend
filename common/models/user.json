@@ -14,7 +14,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "profiles": {
+      "type": "hasMany",
+      "model": "Profile",
+      "foreignKey": ""
+    }
+  },
   "acls": [
     {
       "accessType": "*",
@@ -26,7 +32,12 @@
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": ["create", "login", "logout", "confirm"]
+      "property": [
+        "create",
+        "login",
+        "logout",
+        "confirm"
+      ]
     },
     {
       "accessType": "*",
@@ -35,18 +46,18 @@
       "permission": "ALLOW"
     },
     {
+      "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "DENY",
-      "property": "adminInvite",
-      "accessType": "EXECUTE"
+      "property": "adminInvite"
     },
     {
+      "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "resetPassword",
-      "accessType": "EXECUTE"
+      "property": "resetPassword"
     },
     {
       "accessType": "*",
@@ -58,7 +69,7 @@
       "accessType": "READ",
       "principalType": "ROLE",
       "principalId": "$everyone",
-      "permission": "ALLOW"
+      "permission": "DENY"
     },
     {
       "principalType": "ROLE",

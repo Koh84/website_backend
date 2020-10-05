@@ -58,19 +58,34 @@ app.models.Role.find({ where: { name: 'admin' } }, (err, role) => {
         {
           name: 'admin',
         }, (err2, result) => {
-        if (!err2 && result) {
-          app.models.user.findOne((usererr, user) => {
-            if (!usererr && user) {
-              result.principals.create({
-                principalType: app.models.RoleMapping.USER,
-                principalId: user.id
-              }, (err3, principal) => {
-                console.log('Created princiapl', err3, principal);
-              })
-            }
-          })
+          if (!err2 && result) {
+            app.models.user.findOne((usererr, user) => {
+              if (!usererr && user) {
+                result.principals.create({
+                  principalType: app.models.RoleMapping.USER,
+                  principalId: user.id
+                }, (err3, principal) => {
+                  console.log('Created princiapl', err3, principal);
+                })
+              }
+            })
+          }
+        })
+    }
+  }
+});
+
+app.models.Role.find({ where: { name: 'editor' } }, (err, roles) => {
+  if (!err && roles) {
+    console.log('No error, roles are', roles);
+    if (roles.length === 0) {
+      app.models.Role.create(
+        {
+          name: 'editor',
+        }, (creationErr, result) => {
+          console.log("creationErr?", creationErr, result);
         }
-      })
+      )
     }
   }
 });

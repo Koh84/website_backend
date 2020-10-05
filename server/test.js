@@ -12,11 +12,34 @@ var filter = {
     }
 }
 
+models.Profile.destroyAll(filter.where, (err, found) =>{
+    console.log("Destroyed?", err, found);
+});
+
+/*
+models.Profile.findById("5f7adc4d3b3578496030d3bd", (err, found) =>{
+    console.log("found", err, found);
+    found.destroy();
+});
+*/
+/*
+var filter = {
+    where: {
+        name: {like: 'Nick'}
+    },
+    order: 'id ASC',
+    limit: 3,
+    skip: 4,
+    fields: {
+        email: true
+    }
+}
+
 models.Profile.find(filter, (err, found)=>{
 console.log("Found?", err, found);
 });
 
-
+*/
 /*var toSave = [
     {name: 'Nick1', email: 'nick1@nick.com'},
     {name: 'NickA', email: 'nickA@nick.com'},

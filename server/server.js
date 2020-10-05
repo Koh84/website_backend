@@ -5,14 +5,15 @@
 
 'use strict';
 
+const { Role, User } = require('loopback');
 const loopback = require('loopback');
 const boot = require('loopback-boot');
 
 const app = module.exports = loopback();
 
-app.start = function() {
+app.start = function () {
   // start the web server
-  return app.listen(function() {
+  return app.listen(function () {
     app.emit('started');
     const baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
@@ -25,7 +26,7 @@ app.start = function() {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
+boot(app, __dirname, function (err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`
@@ -33,18 +34,43 @@ boot(app, __dirname, function(err) {
     app.start();
 });
 
-app.models.user.afterRemote('create', (ctx, user, next)=>{
+app.models.user.afterRemote('create', (ctx, user, next) => {
   console.log("New user is", user);
   app.models.Profile.create({
     first_name: user.username,
     create_at: new Date(),
     userId: user.id
-    },(err, result) => {
-      if(!err && result){
-        console.log("Created profile :", result);
-      }else{
-        console.log("Thre is an error :", err);
-      }
-      next();
-    });
+  }, (err, result) => {
+    if (!err && result) {
+      console.log("Created profile :", result);
+    } else {
+      console.log("Thre is an error :", err);
+    }
+    next();
+  });
+});
+
+app.models.Role.find({ where: { name: 'admin' } }, (err, role) => {
+  if (!err && role) {
+    console.log('No error, role is', role);
+    if (role.length === 0) {
+      app.models.Role.create(
+        {
+          name: 'admin',
+        }, (err2, result) => {
+        if (!err2 && result) {
+          app.models.user.findOne((usererr, user) => {
+            if (!usererr && user) {
+              result.principals.create({
+                principalType: app.models.RoleMapping.USER,
+                principalId: user.id
+              }, (err3, principal) => {
+                console.log('Created princiapl', err3, principal);
+              })
+            }
+          })
+        }
+      })
+    }
+  }
 });

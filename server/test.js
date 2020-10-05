@@ -5,7 +5,11 @@ var filter = {
         name: {like: 'Nick'}
     },
     order: 'id ASC',
-    limit: 3
+    limit: 3,
+    skip: 4,
+    fields: {
+        email: true
+    }
 }
 
 models.Profile.find(filter, (err, found)=>{

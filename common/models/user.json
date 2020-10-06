@@ -29,6 +29,11 @@
       "type": "hasMany",
       "model": "Post",
       "foreignKey": ""
+    },
+    "postImages": {
+      "type": "hasMany",
+      "model": "PostImage",
+      "foreignKey": ""
     }
   },
   "acls": [
